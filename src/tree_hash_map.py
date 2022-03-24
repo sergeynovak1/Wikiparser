@@ -9,14 +9,6 @@ class LinkedList:
 			self.next_node = next_node
 			self.key = key
 
-	class NodeTree:
-		def __init__(self, key, element = None, left = None, right = None):
-			self.element = element
-			self.left = left
-			self.right = right
-			self.key = key
-
-
 	def append(self, key, element):
 		if not self.head:
 			self.head = self.NodeHash(key, element)
@@ -25,24 +17,6 @@ class LinkedList:
 		while node.next_node:
 			node = node.next_node
 		node.next_node = self.NodeHash(key, element)
-
-	def insert(self, key, element, index):
-		k = 0
-		node = self.head
-		while k < index:
-			prev_node = node
-			node = node.next_node
-			k += 1
-		prev_node.next_node = self.NodeHash(key, element, next_node = node)
-
-	def delite(self, index):
-		k = 0
-		node = self.head
-		while k < index:
-			prev_node = node
-			node = node.next_node
-			k += 1
-		prev_node.next_node = node.next_node
 
 	def delkey(self, key):
 		if self.head.key == key:
@@ -58,15 +32,6 @@ class LinkedList:
 				node = node.next_node
 				prev_node.next_node = node.next_node
 
-	#хэш совпал --> ключ совпал --> запись значения по ключу
-	def check_key(self, key, element):
-		node = self.head
-		while node:
-			if node.key == key:
-				node.element = element
-				return True
-			node = node.next_node
-
 	def __iter__(self):
 		self.node = self.head
 		return self
@@ -79,7 +44,6 @@ class LinkedList:
 		else:
 			raise StopIteration
 
-
 	def __str__(self):
 		node = self.head
 		values = []
@@ -87,6 +51,7 @@ class LinkedList:
 			values.append(str(node.element))
 			node = node.next_node
 		return ' -> '.join(values)
+
 
 class HashMap:
 	def __init__(self, _size=100):
@@ -97,7 +62,6 @@ class HashMap:
 		self._size = _size
 		self._cnt = 0
 
-
 	def __getitem__(self, key):
 		linked_list = self._inner_list[hash(key) % self._size]
 		node = linked_list.head
@@ -106,16 +70,12 @@ class HashMap:
 				return node.element
 			node = node.next_node
 
-	def get_cnt(self):
-		return self._cnt
-	def get_list(self):
-		return self._inner_list
 	def __setitem__(self, key, value):
 		self._inner_list[hash(key) % self._size].append(key, value)
 		self._cnt += 1
 		# увеличиваем массив
 		if self._size * CONST_TO_INCREASE >= self._cnt:
-			self._size *= 2
+			self._size *= 1
 			new_inner_list = []
 			for _ in range(self._size):
 				a = LinkedList()
@@ -147,74 +107,92 @@ class HashMap:
 				mas.append(f'{b} {a}')
 		return '\n'.join(map(str, mas))
 
+	def get_cnt(self):
+		return self._cnt
+	def get_list(self):
+		return self._inner_list
+
+
 class TreeMap:
-	head = None
+	root = None
 	class NodeTree:
-		def __init__(self, key, element = None, left = None, right = None):
+		def __init__(self, key, element, left = None, right = None):
 			self.element = element
 			self.left = left
 			self.right = right
 			self.key = key
 
-	def __init__(self, left = None, right = None):
+	def __init__(self):
 		self.list = []
-		self.head = None
-		self.right = right
-		self.left = left
+		self.root = None
 
 	def __getitem__(self, key):
-		node = self.head
-		while node:
-			if node.key == key:
+		def getitem(node):
+			if node is None:
+				raise KeyError
+			if key == node.key:
 				return node.element
-				break
+			elif key < node.key:
+				return getitem(node.left)
 			else:
-				if node.key < key:
-					node = node.right
-				else:
-					node = node.left
+				return getitem(node.right)
+		return getitem(self.root)
 
-	def get_list(self):
-		return self.list
 	def __setitem__(self, key, element):
-		if not self.head:
-			self.head = self.NodeTree(key, element)
-			self.list.append(key)
-		else:
-			node = self.head
-			prev_node = node
-			while node:
-				if (prev_node.key > key) and (node.key < key):
-					prev_node.left = self.NodeTree(key, element, left = node)
-					self.list.append(key)
-					break
-				elif (prev_node.key < key) and (node.key > key):
-					prev_node.right = self.NodeTree(key, element, right = node)
-					self.list.append(key)
-					break
+		def setitem(node):
+			if node is None:
+				self.list.append(key)
+				return self.NodeTree(key, element)
+			else:
+				if key == node.key:
+					node.element = element
+				elif key < node.key:
+					node.left = setitem(node.left)
 				else:
-					if node.key < key:
-						if node.right is not None:
-							prev_node = node
-							node = node.right
-						else:
-							node.right = self.NodeTree(key, element)
-							self.list.append(key)
-							break
-					else:
-						if node.left is not None:
-							prev_node = node
-							node = node.left
-						else:
-							node.left = self.NodeTree(key, element)
-							self.list.append(key)
-							break
+					node.right = setitem(node.right)
+				return node
+		self.root = setitem(self.root)
+
+	@staticmethod
+	def find_min_node(node):
+		if node.left is not None:
+			return TreeMap.find_min_node(node.left)
+		return node
+
+	def __delitem__(self, key):
+		def delitem(node, key):
+			if node is None:
+				raise KeyError
+			if key < node.key:
+				node.left = delitem(node.left, key)
+				return node
+			elif key > node.key:
+				result = delitem(node.right, key)
+				node.right = result
+				return node
+			else:
+				if node.left is None and node.right is None:
+					return None
+				elif node.left is not None and node.right is None:
+					return node.left
+				elif node.left is None and node.right is not None:
+					return node.right
+				else:
+					min_node = TreeMap.find_min_node(node.right)
+					node.key = min_node.key
+					node.value = min_node.value
+					node.right = delitem(node.right, min_node.key)
+					return node
+		self.root = delitem(self.root, key)
 
 	def __str__(self):
-		def retur_key(node):
+		def return_key(node):
 			return f" {node.key}:{node.element} "
 		def return_all(node):
 			if node is None:
 				return ''
-			return return_all(node.left) + retur_key(node) + return_all(node.right)
+			return return_all(node.left) + return_key(node) + return_all(node.right)
 		return return_all(self.head)
+
+	def get_list(self):
+		return self.list
