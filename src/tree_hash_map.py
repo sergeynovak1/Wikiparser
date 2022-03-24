@@ -1,14 +1,17 @@
 CONST_TO_INCREASE = 0.8
 
+#односвязный список
 class LinkedList:
     head = None
 
+    #инициализация элементов
     class NodeHash:
         def __init__(self, key, element = None, next_node = None):
             self.element = element
             self.next_node = next_node
             self.key = key
 
+    #добавление элементов в конец
     def append(self, key, element):
         if not self.head:
             self.head = self.NodeHash(key, element)
@@ -18,6 +21,7 @@ class LinkedList:
             node = node.next_node
         node.next_node = self.NodeHash(key, element)
 
+    #удаление по ключу
     def delkey(self, key):
         if self.head.key == key:
             self.head = self.head.next_node
@@ -32,16 +36,19 @@ class LinkedList:
                 node = node.next_node
                 prev_node.next_node = node.next_node
 
+    #итерация
     def __iter__(self):
         self.node = self.head
         return self
 
+    #возвращение слудующего
     def __next__(self):
         if self.node is not None:
             self.node = self.node.next_node
             return self.node.element
         raise StopIteration
 
+    #вывод в строку
     def __str__(self):
         node = self.head
         values = []
