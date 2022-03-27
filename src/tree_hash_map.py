@@ -141,6 +141,7 @@ class TreeMap:
     def __init__(self):
         self.list = []
         self.root = None
+        self.size = 0
 
     def __getitem__(self, key):
         def getitem(node):
@@ -157,6 +158,7 @@ class TreeMap:
         def setitem(node):
             if node is None:
                 self.list.append(key)
+                self.size += 1
                 return self.NodeTree(key, element)
             if key == node.key:
                 node.element = element
@@ -210,4 +212,7 @@ class TreeMap:
 
     def get_list(self):
         return self.list
+
+    def get_size(self):
+        return self.size
 
