@@ -260,9 +260,9 @@ class TestTreeMapSet(unittest.TestCase):
             hash_map[randint(1, 1000)] = randint(1, 1000)
         key = randint(1, 1000)
         val = randint(1, 1000)
-        ex1 = hash_map.get_cnt()
+        ex1 = hash_map.get_size()
         hash_map[key] = val
-        ex2 = hash_map.get_cnt()
+        ex2 = hash_map.get_size()
         self.assertEqual(ex1, ex2 - 1)
 
     def test_setitem_include(self):
