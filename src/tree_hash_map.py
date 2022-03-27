@@ -4,6 +4,7 @@ CONST_TO_INCREASE = 0.8
 class LinkedList:
     """односвязный список"""
     head = None
+    node = None
 
     class NodeHash:
         """инициализация элементов"""
@@ -112,22 +113,27 @@ class HashMap:
             if len(values) == 0:
                 mas.append(f'No elements with hash-key "{index}"')
             else:
-                a = ' --> '.join(values)
-                b = f'Elements with hash-key "{index}" \t'
-                mas.append(f'{b} {a}')
+                first = ' --> '.join(values)
+                second = f'Elements with hash-key "{index}" \t'
+                mas.append(f'{first} {second}')
         return '\n'.join(map(str, mas))
 
+    @property
     def get_cnt(self):
         """размер"""
         return self._cnt
+
+    @property
     def get_list(self):
         """лист"""
         return self._inner_list
 
 
 class TreeMap:
+    """Tree-Map"""
     root = None
     class NodeTree:
+        """инициализация элементов"""
         def __init__(self, key, element, left = None, right = None):
             self.element = element
             self.left = left
@@ -165,34 +171,34 @@ class TreeMap:
 
     @staticmethod
     def find_min_node(node):
+        """поиск минимального"""
         if node.left is not None:
             return TreeMap.find_min_node(node.left)
         return node
 
     def __delitem__(self, key):
         def delitem(node, key):
+            """удаление по ключу"""
             if node is None:
                 raise KeyError
             if key < node.key:
                 node.left = delitem(node.left, key)
                 return node
-            elif key > node.key:
+            if key > node.key:
                 result = delitem(node.right, key)
                 node.right = result
                 return node
-            else:
-                if node.left is None and node.right is None:
-                    return None
-                elif node.left is not None and node.right is None:
-                    return node.left
-                elif node.left is None and node.right is not None:
-                    return node.right
-                else:
-                    min_node = TreeMap.find_min_node(node.right)
-                    node.key = min_node.key
-                    node.value = min_node.value
-                    node.right = delitem(node.right, min_node.key)
-                    return node
+            if node.left is None and node.right is None:
+                return None
+            if node.left is not None and node.right is None:
+                return node.left
+            if node.left is None and node.right is not None:
+                return node.right
+            min_node = TreeMap.find_min_node(node.right)
+            node.key = min_node.key
+            node.value = min_node.value
+            node.right = delitem(node.right, min_node.key)
+            return node
         self.root = delitem(self.root, key)
 
     def __str__(self):
@@ -202,7 +208,9 @@ class TreeMap:
             if node is None:
                 return ''
             return return_all(node.left) + return_key(node) + return_all(node.right)
-        return return_all(self.head)
+        return return_all(self.root)
 
+    @property
     def get_list(self):
         return self.list
+
