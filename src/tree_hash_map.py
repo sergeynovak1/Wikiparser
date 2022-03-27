@@ -1,5 +1,5 @@
 CONST_TO_INCREASE = 0.8
-'''переменная для увеличения размера массива'''
+#переменная для увеличения размера массива
 
 class LinkedList:
     """односвязный список"""
@@ -118,12 +118,10 @@ class HashMap:
                 mas.append(f'{first} {second}')
         return '\n'.join(map(str, mas))
 
-    @property
     def get_cnt(self):
         """размер"""
         return self._cnt
 
-    @property
     def get_list(self):
         """лист"""
         return self._inner_list
@@ -210,7 +208,6 @@ class TreeMap:
             return return_all(node.left) + return_key(node) + return_all(node.right)
         return return_all(self.root)
 
-    @property
     def get_list(self):
         return self.list
 

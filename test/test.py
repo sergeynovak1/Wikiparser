@@ -1,52 +1,57 @@
 import unittest
-from random import *
+from random import randint
 
 import src.tree_hash_map as tr
 
 
 
 class TestHashMapGet(unittest.TestCase):
+    """тестирование метода get  в Hash-MAp"""
     def test_getitem_equel(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key]
+        """тестим get равно"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        elem = hash_map[key]
         self.assertEqual(val, elem)
 
     def test_getitem_notequel(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key] + 5
+        """тестим get не равно"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        elem = hash_map[key] + 5
         self.assertNotEqual(val, elem)
 
     def test_getitem_cnt(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        ex1 = hash.get_cnt()
-        elem = hash[key]
-        ex2 = hash.get_cnt()
+        """тестим get размер"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        ex1 = hash_map.get_cnt()
+        elem = hash_map[key]
+        ex2 = hash_map.get_cnt()
         self.assertEqual(ex1, ex2)
 
     def test_getitem_include(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        list = hash.get_list()
-        for elem in list:
+        """тестим get входит"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        list_test = hash_map.get_list()
+        for elem in list_test:
             node = elem.head
             while node:
                 if node.element == val:
@@ -54,49 +59,54 @@ class TestHashMapGet(unittest.TestCase):
                     return 0
                 node = node.next_node
         else:
-            self.assertIs(list[0].head.element, val)
+            self.assertIs(list_test[0].head.element, val)
 
 class TestHashMapSet(unittest.TestCase):
+    """тестирование метода get  в Hash-MAp"""
     def test_setitem_equel(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key]
+        """тестим set равно"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        elem = hash_map[key]
         self.assertEqual(val, elem)
 
     def test_setitem_notequel(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key] - 2
+        """тестим set не равно"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        elem = hash_map[key] - 2
         self.assertNotEqual(val, elem)
 
     def test_setitem_cnt(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        ex1 = hash.get_cnt()
-        hash[key] = val
-        ex2 = hash.get_cnt()
+        """тестим set размер"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        ex1 = hash_map.get_cnt()
+        hash_map[key] = val
+        ex2 = hash_map.get_cnt()
         self.assertEqual(ex1, ex2 - 1)
 
     def test_setitem_include(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        list = hash.get_list()
-        for elem in list:
+        """тестим get входит"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        list_test = hash_map.get_list()
+        for elem in list_test:
             node = elem.head
             while node:
                 if node.element == val:
@@ -104,45 +114,49 @@ class TestHashMapSet(unittest.TestCase):
                     return 0
                 node = node.next_node
         else:
-            self.assertIs(list[0].head.element, val)
+            self.assertIs(list_test[0].head.element, val)
 
 class TestHashMapDel(unittest.TestCase):
-    def test_delitem_notequel(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        hash.__delitem__(key)
-        elem = hash[key]
+    """тестирование метода del  в Hash-MAp"""
+    def test_getitem_equel(self):
+        """тестим get не равно"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        hash_map.__delitem__(key)
+        elem = hash_map[key]
         self.assertNotEqual(val, elem)
 
     def test_delitem_only_none(self):
-        hash = tr.HashMap()
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        hash.__delitem__(key)
-        list = hash.get_list()
-        for elem in list:
+        """тестим удаление только одного"""
+        hash_map = tr.HashMap()
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        hash_map.__delitem__(key)
+        list_test = hash_map.get_list()
+        for elem in list_test:
             node = elem.head
             while node:
                 node = node.next_node
                 raise EOFError
         else:
-            self.assertIsNone(list[0].head)
+            self.assertIsNone(list_test[0].head)
 
     def test_delitem_notinclude(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        hash.__delitem__(key)
-        list = hash.get_list()
-        for elem in list:
+        """тестим удаленный не состоит"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        hash_map.__delitem__(key)
+        list_test = hash_map.get_list()
+        for elem in list_test:
             node = elem.head
             while node:
                 if node.element == val:
@@ -153,104 +167,114 @@ class TestHashMapDel(unittest.TestCase):
             self.assertIsNot(ram.element, val)
 
     def test_delitem_cnt(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        ex1 = hash.get_cnt()
-        hash.__delitem__(key)
-        ex2 = hash.get_cnt()
+        """тестим размер удаления"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        ex1 = hash_map.get_cnt()
+        hash_map.__delitem__(key)
+        ex2 = hash_map.get_cnt()
         self.assertEqual(ex1, ex2 + 1)
 
 
 
 class TestTreeMapGet(unittest.TestCase):
+    """тестирование метода get  в Tree-MAp"""
     def test_getitem_equel(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key]
+        """тестим get равно"""
+        hash_map = tr.TreeMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        elem = hash_map[key]
         self.assertEqual(val, elem)
 
     def test_getitem_notequel(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key] + 5
+        """тестим get не равно"""
+        hash_map = tr.TreeMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        elem = hash_map[key] + 5
         self.assertNotEqual(val, elem)
 
     def test_getitem_include(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key]
-        list = hash.get_list()
-        self.assertIn(key, list)
+        """тестим get входит"""
+        hash_map = tr.TreeMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        list_test = hash_map.get_list()
+        self.assertIn(key, list_test)
 
     def test_getitem_size(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        ex1 = len(hash.get_list())
-        elem = hash[key]
-        ex2 = len(hash.get_list())
+        """тестим get размер"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        ex1 = hash_map.get_cnt()
+        elem = hash_map[key]
+        ex2 = hash_map.get_cnt()
         self.assertEqual(ex1, ex2)
 
 class TestTreeMapSet(unittest.TestCase):
+    """тестирование метода get  в Hash-MAp"""
     def test_setitem_equel(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key]
+        """тестим set равно"""
+        hash_map = tr.TreeMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        elem = hash_map[key]
         self.assertEqual(val, elem)
 
     def test_setitem_notequel(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key] - 2
+        """тестим set не равно"""
+        hash_map = tr.TreeMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        elem = hash_map[key] - 2
         self.assertNotEqual(val, elem)
 
     def test_setitem_size(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        ex1 = len(hash.get_list())
-        hash[key] = val
-        ex2 = len(hash.get_list())
+        """тестим set размер"""
+        hash_map = tr.TreeMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        ex1 = hash_map.get_cnt()
+        hash_map[key] = val
+        ex2 = hash_map.get_cnt()
         self.assertEqual(ex1, ex2 - 1)
 
     def test_setitem_include(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        list = hash.get_list()
-        self.assertIn(key, list)
+        """тестим get входит"""
+        hash_map = tr.HashMap()
+        for _ in range(randint(1, 20)):
+            hash_map[randint(1, 1000)] = randint(1, 1000)
+        key = randint(1, 1000)
+        val = randint(1, 1000)
+        hash_map[key] = val
+        list_test = hash_map.get_list()
+        self.assertIn(key, list_test)
 
 
 
