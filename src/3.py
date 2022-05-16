@@ -1,11 +1,11 @@
-import urllib.request
 import time
 import random
-from concurrent.futures import *
-from multiprocessing import *
-from threading import *
+from threading import Thread
+from threading import BoundedSemaphore
 
-task_id = [i for i in range(1, 21)]
+data_semaphore = BoundedSemaphore(10)
+file_semaphore = BoundedSemaphore(5)
+console_semaphore = BoundedSemaphore(1)
 
 
 def get_data(task_id):
@@ -26,29 +26,19 @@ def write_to_console(task_id):
     print(f"completed write_to_console({task_id})")
 
 
-with ThreadPoolExecutor(10) as executor:
-    results1 = executor.map(get_data, task_id)
+def action(task_id):
+    get_data(task_id)
+    file = Thread(target=write_to_file, args=(task_id,))
+    console = Thread(target=write_to_console, args=(task_id,))
+    file.start()
+    console.start()
+    file.join()
+    console.join()
 
-to_file1 = Thread(target=write_to_file, args=task_id)
-to_file2 = Thread(target=write_to_file, args=task_id)
-to_file3 = Thread(target=write_to_file, args=task_id)
-to_file4 = Thread(target=write_to_file, args=task_id)
-to_file5 = Thread(target=write_to_file, args=task_id)
 
-thr_console1 = Thread(target=write_to_console, args=task_id)
-
-thr_file1.start()
-thr_file2.start()
-thr_file3.start()
-thr_file4.start()
-thr_file5.start()
-
-thr_console1.start()
-
-thr_file1.join()
-thr_file2.join()
-thr_file3.join()
-thr_file4.join()
-thr_file5.join()
-
-thr_console1.join()
+if __name__ == '__main__':
+    users = [Thread(target = action, args = (task_id,)) for task_id in range(1, 21)]
+    for user in users:
+        user.start()
+    for user in users:
+        user.join()
