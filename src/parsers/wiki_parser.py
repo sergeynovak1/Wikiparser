@@ -6,7 +6,7 @@ import requests
 import uuid
 from bs4 import BeautifulSoup
 
-from src.maps.Hash import HashMap
+from src.maps.hash_map import HashMap
 
 
 def wiki_parser(url: str, base_path: str) -> list[str]:

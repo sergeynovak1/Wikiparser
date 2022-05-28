@@ -1,12 +1,13 @@
 import unittest
 from random import *
 
-import src.maps.tree_hash_map as tr
+from src.maps.hash_map import HashMap
+from src.maps.tree_map import TreeMap
 
 
 class TestHashMapGet(unittest.TestCase):
     def test_getitem_equel(self):
-        hash = tr.HashMap()
+        hash = HashMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -16,7 +17,7 @@ class TestHashMapGet(unittest.TestCase):
         self.assertEqual(val, elem)
 
     def test_getitem_not_equel(self):
-        hash = tr.HashMap()
+        hash = HashMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -26,7 +27,7 @@ class TestHashMapGet(unittest.TestCase):
         self.assertNotEqual(val, elem)
 
     def test_getitem_cnt(self):
-        hash = tr.HashMap()
+        hash = HashMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -37,27 +38,10 @@ class TestHashMapGet(unittest.TestCase):
         ex2 = hash.get_cnt()
         self.assertEqual(ex1, ex2)
 
-    def test_getitem_include(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        list = hash.get_list()
-        for elem in list:
-            node = elem.head
-            while node:
-                if node.element == val:
-                    self.assertIs(node.element, val)
-                    return 0
-                node = node.next_node
-        else:
-            self.assertIs(list[0].head.element, val)
 
 class TestHashMapSet(unittest.TestCase):
     def test_setitem_equel(self):
-        hash = tr.HashMap()
+        hash = HashMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -67,7 +51,7 @@ class TestHashMapSet(unittest.TestCase):
         self.assertEqual(val, elem)
 
     def test_setitem_notequel(self):
-        hash = tr.HashMap()
+        hash = HashMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -77,7 +61,7 @@ class TestHashMapSet(unittest.TestCase):
         self.assertNotEqual(val, elem)
 
     def test_setitem_cnt(self):
-        hash = tr.HashMap()
+        hash = HashMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -87,97 +71,20 @@ class TestHashMapSet(unittest.TestCase):
         ex2 = hash.get_cnt()
         self.assertEqual(ex1, ex2 - 1)
 
-    def test_setitem_include(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        list = hash.get_list()
-        for elem in list:
-            node = elem.head
-            while node:
-                if node.element == val:
-                    self.assertIs(node.element, val)
-                    return 0
-                node = node.next_node
-        else:
-            self.assertIs(list[0].head.element, val)
-
-class TestHashMapDel(unittest.TestCase):
-    def test_delitem_notequel(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        hash.__delitem__(key)
-        elem = hash[key]
-        self.assertNotEqual(val, elem)
-
-    def test_delitem_only_none(self):
-        hash = tr.HashMap()
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        hash.__delitem__(key)
-        list = hash.get_list()
-        for elem in list:
-            node = elem.head
-            while node:
-                node = node.next_node
-                raise EOFError
-        else:
-            self.assertIsNone(list[0].head)
-
-    def test_delitem_notinclude(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        hash.__delitem__(key)
-        list = hash.get_list()
-        for elem in list:
-            node = elem.head
-            while node:
-                if node.element == val:
-                    raise EOFError
-                ram = node
-                node = node.next_node
-        else:
-            self.assertIsNot(ram.element, val)
-
-    def test_delitem_cnt(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        ex1 = hash.get_cnt()
-        hash.__delitem__(key)
-        ex2 = hash.get_cnt()
-        self.assertEqual(ex1, ex2 + 1)
-
-
 
 class TestTreeMapGet(unittest.TestCase):
     def test_getitem_equel(self):
-        hash = tr.TreeMap()
+        tree = TreeMap()
         for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
+            tree[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
         val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key]
+        tree[key] = val
+        elem = tree[key]
         self.assertEqual(val, elem)
 
     def test_getitem_notequel(self):
-        hash = tr.TreeMap()
+        hash = TreeMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -186,19 +93,8 @@ class TestTreeMapGet(unittest.TestCase):
         elem = hash[key] + 5
         self.assertNotEqual(val, elem)
 
-    def test_getitem_include(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        elem = hash[key]
-        list = hash.get_list()
-        self.assertIn(key, list)
-
     def test_getitem_size(self):
-        hash = tr.TreeMap()
+        hash = TreeMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -211,7 +107,7 @@ class TestTreeMapGet(unittest.TestCase):
 
 class TestTreeMapSet(unittest.TestCase):
     def test_setitem_equel(self):
-        hash = tr.TreeMap()
+        hash = TreeMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -221,7 +117,7 @@ class TestTreeMapSet(unittest.TestCase):
         self.assertEqual(val, elem)
 
     def test_setitem_notequel(self):
-        hash = tr.TreeMap()
+        hash = TreeMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -231,7 +127,7 @@ class TestTreeMapSet(unittest.TestCase):
         self.assertNotEqual(val, elem)
 
     def test_setitem_size(self):
-        hash = tr.TreeMap()
+        hash = TreeMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -242,7 +138,7 @@ class TestTreeMapSet(unittest.TestCase):
         self.assertEqual(ex1, ex2 - 1)
 
     def test_setitem_include(self):
-        hash = tr.TreeMap()
+        hash = TreeMap()
         for i in range(randint(1, 20)):
             hash[randint(1, 1000)] = randint(1, 1000)
         key = randint(1000, 10000)
@@ -250,66 +146,3 @@ class TestTreeMapSet(unittest.TestCase):
         hash[key] = val
         list = hash.get_list()
         self.assertIn(key, list)
-
-class TestTreeMapDel(unittest.TestCase):
-    def test_delitem_notequel(self):
-        hash = tr.TreeMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        hash.__delitem__(key)
-        elem = hash[key]
-        self.assertNotEqual(val, elem)
-
-    def test_delitem_only_none(self):
-        hash = tr.HashMap()
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        hash.__delitem__(key)
-        list = hash.get_list()
-        for elem in list:
-            node = elem.head
-            while node:
-                node = node.next_node
-                raise EOFError
-        else:
-            self.assertIsNone(list[0].head)
-
-    def test_delitem_notinclude(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        hash.__delitem__(key)
-        list = hash.get_list()
-        for elem in list:
-            node = elem.head
-            while node:
-                if node.element == val:
-                    raise EOFError
-                ram = node
-                node = node.next_node
-        else:
-            self.assertIsNot(ram.element, val)
-
-    def test_delitem_cnt(self):
-        hash = tr.HashMap()
-        for i in range(randint(1, 20)):
-            hash[randint(1, 1000)] = randint(1, 1000)
-        key = randint(1000, 10000)
-        val = randint(1000, 10000)
-        hash[key] = val
-        ex1 = hash.get_cnt()
-        hash.__delitem__(key)
-        ex2 = hash.get_cnt()
-        self.assertEqual(ex1, ex2 + 1)
-
-
-
-
-

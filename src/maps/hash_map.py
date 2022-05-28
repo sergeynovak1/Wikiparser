@@ -153,3 +153,11 @@ class HashMap:
 
     def __bool__(self):
         return len(self) != 0
+
+    def get_cnt(self):
+        """размер"""
+        return self._cnt
+
+    def get_list(self):
+        """лист"""
+        return self._inner_list
